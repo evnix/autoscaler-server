@@ -3,7 +3,7 @@
 
 ```
 Dealine: 12 April 2016
-Nishant - serer shutdown interface (Agent) [pending]
+Nishant - server shutdown interface (Agent) [pending]
 Avinash - code deployment server [Done]
 ```
 

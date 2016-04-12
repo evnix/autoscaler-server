@@ -2,26 +2,38 @@
 
 
 ```
+Dealine: 12 April 2016
+Nishant - server shutdown interface (Agent) [pending]
+Avinash - code deployment server [Done]
+```
+
+```
+Dealine: 8 April 2016
+Nishant - Send Agent Metrics to Server (Agent) [Done!!]
+Avinash - instance creation server [Done]
+```
+
+```
 Dealine: 1 April 2016
-Nishant - Send Agent Metrics to Server [Pending!!]
+Nishant - Send Agent Metrics to Server(Agent) [Pending!!]
 Avinash - Run basic deployment APIs [Done]
 ```
 
 ```
 Dealine: 25 March 2016
-Nishant - Send Agent Metrics to Server [Pending!!]
+Nishant - Send Agent Metrics to Server(Agent) [Pending!!]
 Avinash - Build a supervisor [Done]
 ```
 
 ```
 Dealine: 18 March 2016
-Nishant - Send Agent Metrics to Server [Pending]
+Nishant - Send Agent Metrics to Server(Agent) [Pending]
 Avinash - Gem for RPC/IPC between two ruby processes [Done]
 ```
 
 ```
 Dealine: 11 March 2016
-Nishant - Send Agent Metrics to Server [Pending]
+Nishant - Send Agent Metrics to Server(Agent) [Pending]
 Avinash - Compare local hash to remote hash & pull new code [Done]
 ```
 

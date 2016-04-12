@@ -20,7 +20,7 @@ class LibConfig
 	end
 
 
-	def _listConfigs()
+	def self._listConfigs()
 
 			return Dir[ServerConfig.get("configLocation")+"/*.config"]
 	end
@@ -44,7 +44,7 @@ class LibConfig
 	end
 
 
-	def _getRepoConfig(path)
+	def self._getRepoConfig(path)
 
 
 		strConfig = File.read(path)

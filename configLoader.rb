@@ -11,6 +11,8 @@ def main()
     puts "hello"
  	p LC.populateRepos()   
     FRPC.run(FRPC.receiveMsg("channels/configLoader"))
+    FRPC.exec("channels/supervisor","counter_inc","configLoader")
+
     sleep(2)
      
 

@@ -3,6 +3,55 @@ require_relative "lib/LibFRPC.rb"
 
 $jobs = ["configLoader"]
 
+
+$counters={}
+
+
+def counter_inc(key)
+
+
+  if $counters[key] == nil
+    $counters[key] = 3
+    return true
+  end
+
+  $counters[key]=$counters[key]+1;
+
+end
+
+
+def counter_dec(key)
+
+
+  if $counters[key] == nil
+    $counters[key] = 3
+  end
+
+  if $counters[key] == 0
+    
+      start_job(key)
+
+  end
+
+  $counters[key]=$counters[key]-1;
+
+end
+
+
+def dec_all()
+
+      $jobs.each {
+
+        |job|
+        
+        counter_dec(job)
+
+    }
+
+end
+
+
+
 def start_job(job)
    
     job1 = fork do
@@ -35,8 +84,6 @@ def start_all()
 end
 
 
-
-
 def stop_all()
 
       $jobs.each {
@@ -52,5 +99,17 @@ end
 
 
 start_all()
-sleep(10)
-stop_all()
+
+
+loop do 
+  # some code here
+  
+
+  dec_all()
+  FRPC.run(FRPC.receiveMsg("channels/supervisor"))
+
+
+  p $counters
+  sleep(2)
+  break if false
+end 

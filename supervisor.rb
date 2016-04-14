@@ -1,11 +1,13 @@
 require_relative "lib/LibFRPC.rb"
 
 
-$jobs = ["configLoader"]
+$jobs = ["configLoader","codeUpdater","instanceCreator","IPFetcher","deployer"]
 
 
+#$jobs=["deployer"]
 $counters={}
 
+FRPC.reset("channels/supervisor")
 
 def counter_inc(key)
 
@@ -29,6 +31,7 @@ def counter_dec(key)
 
   if $counters[key] == 0
     
+      #$counters[key]=3
       start_job(key)
 
   end
@@ -99,6 +102,7 @@ end
 
 
 start_all()
+sleep(2)
 
 
 loop do 
@@ -106,8 +110,13 @@ loop do
   
 
   dec_all()
-  FRPC.run(FRPC.receiveMsg("channels/supervisor"))
 
+  begin
+      $msg=FRPC.receiveMsg("channels/supervisor")
+      FRPC.run($msg)
+      p $msg
+  end until $msg==false
+  
 
   p $counters
   sleep(2)

@@ -57,7 +57,7 @@ class LibDeployer
 
 						if PS.get("p/"+repo+"/wait",time) <= time
 
-							if PS.get("p/"+repo+"/deployed",Time.at(628232400)) < PS.get("p/"+repo+"/latest",Time.at(628232400))
+							if (PS.get("p/"+repo+"/deployed") == nil) ||  ( PS.get("p/"+repo+"/deployed",Time.at(628232400)) < PS.get("p/"+repo+"/latest",Time.at(628232400)) )
 
 									p "deploying..."
 									doDeploy(repo)
@@ -99,6 +99,8 @@ class LibDeployer
 
 					p "Deploying on IP: "+ip
 					runSSH(repo,ip)
+					PS.set("p/"+repo+"/deployed",Time.now)
+
 
 
 			else

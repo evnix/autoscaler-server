@@ -59,6 +59,7 @@ class FIPC
 		if File::exists?(fileName)
 
 			file = File.new( fileName, "rb+")
+			file.flock(File::LOCK_EX)
 			ptrStr = file.read(8)
 
 			ptr = ptrStr.unpack("Q!")[0]

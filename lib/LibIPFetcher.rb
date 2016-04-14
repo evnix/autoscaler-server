@@ -24,7 +24,7 @@ class LibIPFetcher
 			str= open("https://api.vultr.com/v1/server/list",
 					  "API-Key" => "34KSOMQICL5OCDFETXTV6AVZPYW3O4").read
 
-			p str
+			#p str
 			return str
 
 

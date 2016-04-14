@@ -2,6 +2,9 @@
 
 Dependencies:
 gem install net-ssh
+gem install net-scp
+gem install usagewatch
+
 Fog
 
 

@@ -9,10 +9,24 @@ def main()
 
 	puts "CU: "
 	p CU.updateRepos()
+	FRPC.run(FRPC.receiveMsg("channels/codeUpdater"))
+
 	sleep(2)
 
 end 
 
+
+thr = Thread.new { 
+
+	while true do
+
+    FRPC.exec("channels/supervisor","counter_inc","codeUpdater")
+
+	sleep(2)
+
+	end
+
+}
 
 def stop_server()
 

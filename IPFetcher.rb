@@ -8,11 +8,13 @@ IF= LibIPFetcher.new()
 
 def main()
 
-	p "L"
+	p "IP-F"
     IF.fetchIPs()
     FRPC.run(FRPC.receiveMsg("channels/IPFetcher"))
-    FRPC.exec("channels/supervisor","counter_inc","IPFetcher")
-    sleep(2)
+
+
+
+    sleep(15)
      
 
 end 
@@ -24,7 +26,17 @@ def stop_server()
 end
 
 
+thr = Thread.new { 
 
+	while true do
+
+    	FRPC.exec("channels/supervisor","counter_inc","IPFetcher")
+
+		sleep(2)
+
+	end
+
+}
 
 
 while true do

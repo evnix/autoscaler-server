@@ -7,13 +7,13 @@ class LibConfig
 	def populateRepos()
 
 
-			configs = self._listConfigs()
+			configs = LibConfig._listConfigs()
 
 			configs.each{
 
 				|configFile|
 
-				self._populateRepo(configFile)
+				LibConfig._populateRepo(configFile)
 			}
 
 
@@ -26,9 +26,9 @@ class LibConfig
 	end
 
 
-	def _populateRepo(repo)
+	def self._populateRepo(repo)
 
-			objConfig = self._getRepoConfig(repo)
+			objConfig = LibConfig._getRepoConfig(repo)
 			repoDir = objConfig["repoDir"]
 
 			

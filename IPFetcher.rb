@@ -8,7 +8,8 @@ IF= LibIPFetcher.new()
 
 def main()
 
-    puts IF.fetchIPs()
+	p "L"
+    IF.fetchIPs()
     FRPC.run(FRPC.receiveMsg("channels/IPFetcher"))
     FRPC.exec("channels/supervisor","counter_inc","IPFetcher")
     sleep(2)
@@ -18,7 +19,7 @@ end
 
 def stop_server()
 
-    abort("instanceCreator terminated by supervisor.")
+    abort("IPFetcher terminated by supervisor.")
 
 end
 

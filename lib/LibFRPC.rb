@@ -1,4 +1,4 @@
-require_relative './LibFIPC'
+require 'LibFIPC'
 require 'json'
 
 class FRPC < FIPC

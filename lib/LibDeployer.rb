@@ -131,11 +131,17 @@ class LibDeployer
 			Net::SSH.start(ip, 'root') do |ssh|
 			  # capture all stderr and stdout output from a remote process
 			  #output = ssh.exec!("ls")
-			  ssh.exec!("mkdir -p /var/code")
+			  ssh.exec!("mkdir -p /var/code/aa")
 			  o=ssh.scp.upload! ServerConfig.get("tarLocation")+"/"+repo+".tar.gz", "/var/code/file.tar.gz"
+			  o=ssh.scp.upload! ServerConfig.get("tarLocation")+"/"+repo+".config", "/var/code/aa/agent.config"
+			  o=ssh.scp.upload! ServerConfig.get("baseLocation")+"/autoscaler-agent/agent.rb", "/var/code/aa/agent.rb"
+			  o=ssh.exec!("apt-get -y install ruby")
+			  o=ssh.exec!("gem install usagewatch")
 			  o=ssh.exec!("cd /var/code && tar -xzvf file.tar.gz")
 			  o=ssh.exec!("cd /var/code && chmod +x autoscaler.run")
 			  o=ssh.exec!("cd /var/code && ./autoscaler.run")
+			  o=ssh.exec!("cd /var/code/aa && ruby agent.rb &")
+
 			  puts o
 			  # capture only stdout matching a particular pattern
 			 end

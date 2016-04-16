@@ -40,14 +40,33 @@ class LibInstanceCreator
 
 				else
 
-						p "waiting"
+						p "Run.Ins.waiting"
 				end
 					
 					
 
 			else
 
-					p "minInstances already running"
+					p "minInstances already running.. trying required instances"
+
+					running=PS.get("p/"+objConfig["name"]+"/running",0).to_i()
+					required= PS.get("p/"+objConfig["name"]+"/required",0).to_i()+ objConfig["minInstances"].to_i()
+
+					if running < required
+
+						time = Time.now
+
+						if PS.get("p/"+objConfig["name"]+"/wait",time) <= time
+
+							self.startInstances(objConfig["name"],required-running)
+
+						else
+
+								p "Req.Ins.waiting"
+						end
+
+					end
+
 			end
 
 	end
@@ -78,6 +97,7 @@ class LibInstanceCreator
 
 				PS.set("p/"+name+"/wait",(Time.now + 5*60))
 
+            	PS.set("p/"+name+"/latest",(Time.now))
 
 				jstr = PS.get("p/"+name+"/subids","[]")
 				subids = JSON.parse(jstr)

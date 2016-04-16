@@ -1,7 +1,7 @@
 require_relative "lib/LibFRPC.rb"
 
 
-$jobs = ["configLoader","codeUpdater","instanceCreator","IPFetcher","deployer"]
+$jobs = ["configLoader","codeUpdater","instanceCreator","IPFetcher","deployer","web"]
 
 
 #$jobs=["deployer"]
@@ -106,8 +106,7 @@ sleep(2)
 
 
 loop do 
-  # some code here
-  
+
 
   dec_all()
 

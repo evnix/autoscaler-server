@@ -1,10 +1,15 @@
 # autoscaler-server
 
 Dependencies:
+
+````
 gem install net-ssh
 gem install net-scp
+gem install sinatra
+
 gem install usagewatch
 
+````
 Fog
 
 

@@ -35,6 +35,14 @@ class LibConfig
 			if not Dir.exists?(ServerConfig.get("repoLocation")+"/"+repoDir)
 
 				repoURL = objConfig["repoURL"]
+				objConfig["url"] =  ServerConfig.get("host")+"metric"
+ 				objConfig["secret"] = ServerConfig.get("secret")
+ 				objConfig["project"] = objConfig["name"]
+
+ 				str = JSON.generate(objConfig)
+ 				p str
+				File.write(ServerConfig.get("tarLocation")+"/"+repoDir+".config",str)
+
 				system("git clone "+repoURL+" "+ServerConfig.get("repoLocation")+"/"+repoDir)
 
 			end

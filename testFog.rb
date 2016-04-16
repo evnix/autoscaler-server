@@ -1,9 +1,18 @@
-require 'net/ssh'
+require_relative 'lib/LibRingBuffer'
 
-Net::SSH.start('104.238.174.236', 'root') do |ssh|
-  # capture all stderr and stdout output from a remote process
-  output = ssh.exec!("mkdir x")
-  puts output
 
-  # capture only stdout matching a particular pattern
- end
+r=RingBuffer.new(2)
+
+
+r.push(1)
+p r
+
+r.push(2)
+p r
+
+r.push(3)
+p r
+
+
+r.push(4)
+p r

@@ -6,6 +6,9 @@ require_relative "lib/initConfig"
 require_relative "lib/LibFRPC.rb"
 require_relative "lib/LibRingBuffer"
 
+
+set :port, 80
+
 $i=0
 $sample={}
 

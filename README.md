@@ -1,5 +1,34 @@
 # autoscaler-server
 
+````
+cd ~
+mkdir -p test
+cd test 
+apt-get install git
+
+#install ruby
+apt-add-repository ppa:brightbox/ruby-ng
+apt-get update
+sudo apt-get install ruby2.3
+
+gem install net-ssh
+gem install net-scp
+gem install sinatra
+git clone https://github.com/evnix/autoscaler-server.git
+cd autoscaler-server
+chmod -R 0777 data
+
+#fix config
+vi server.config????
+
+#clean DB
+echo "" > data/db.yaml 
+
+ruby supervisor.rb
+
+````
+
+
 Dependencies:
 
 

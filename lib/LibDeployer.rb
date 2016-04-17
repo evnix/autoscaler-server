@@ -133,15 +133,24 @@ class LibDeployer
 			  #output = ssh.exec!("ls")
 			  ssh.exec!("mkdir -p /var/code/aa")
 			  o=ssh.scp.upload! ServerConfig.get("tarLocation")+"/"+repo+".tar.gz", "/var/code/file.tar.gz"
+			  p o
 			  o=ssh.scp.upload! ServerConfig.get("tarLocation")+"/"+repo+".config", "/var/code/aa/agent.config"
+			  p o
 			  o=ssh.scp.upload! ServerConfig.get("baseLocation")+"/autoscaler-agent/agent.rb", "/var/code/aa/agent.rb"
+			  p o
 			  o=ssh.exec!("apt-get -y install ruby")
+			  p o
 			  o=ssh.exec!("gem install usagewatch")
+			  p o
 			  o=ssh.exec!("cd /var/code && tar -xzvf file.tar.gz")
+			  p o
 			  o=ssh.exec!("cd /var/code && chmod +x autoscaler.run")
+			  p o
 			  o=ssh.exec!("cd /var/code && ./autoscaler.run")
-			  o=ssh.exec!("cd /var/code/aa && ruby agent.rb &")
-
+			  p o
+			  o=ssh.exec!("pkill ruby")
+			  p o
+			  o=ssh.exec("cd /var/code/aa && ruby agent.rb > /dev/null &")
 			  puts o
 			  # capture only stdout matching a particular pattern
 			 end

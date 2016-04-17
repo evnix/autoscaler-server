@@ -1,0 +1,14 @@
+{
+
+        "host": "http://test.etzelserver.com/",
+        "baseLocation": "/root/test/autoscaler-server",
+    "configLocation": "/root/test/autoscaler-server/data/config",
+    "repoLocation": "/root/test/autoscaler-server/data/repo",
+    "tarLocation": "/root/test/autoscaler-server/data/tars",
+    "repoHashLocation": "/root/test/autoscaler-server/data/hash",
+    "secret": "sfsd97df7sd89fsdf87s9df87ds8",
+    "sampleSize": 5
+
+}
+
+

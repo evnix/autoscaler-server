@@ -5,15 +5,49 @@ require_relative "lib/ServerConfig"
 require_relative "lib/initConfig"
 require_relative "lib/LibFRPC.rb"
 require_relative "lib/LibRingBuffer"
+require 'digest/sha2'
+enable :sessions
 
-
+set :bind, '0.0.0.0'
 set :port, 80
 
 $i=0
 $sample={}
 
 
-post '*' do
+
+post '/login' do
+  #pass@989..
+   obj ={}
+  if param['p']!=nil &&  ServerConfig.get("pass") == Digest::SHA2.hexdigest(params['p']+ServerConfig.get("salt"))
+      t="ok"
+      session['token'] = rand(999..9999).to_s()+"xq"
+      
+     
+      obj['token'] =session['token']
+      obj['res'] ='ok'
+  else
+     obj['res'] ='nok'
+  end
+
+  JSON.generate(obj)
+end
+
+
+get '/webui' do
+
+  File.read("app/view/file.html")
+
+end
+
+post '/metri*' do
+
+
+
+  if params['data'] == nil
+ 
+    return "noAuth"
+  end
 
   obj=JSON.parse(params['data'])
 
@@ -29,6 +63,8 @@ get '/hi' do
 
 	ret = "hello"
 end
+
+
 
 
 ###############################################
@@ -55,18 +91,19 @@ post '/metric' do
     end
 
     str=File.read(ServerConfig.get("configLocation")+"/"+project+".config")
-    obj=JSON.parse(str)
+    sobj=JSON.parse(str)
 
-    $sample[project]["cpu"].push(obj["cpu"].to_i())
-    cpu = $sample[project]["cpu"].inject(0,:+) / ServerConfig.get("sampleSize").to_i()
+   cpu = $sample[project]["cpu"].inject(0,:+) / ServerConfig.get("sampleSize").to_i()
     $sample[project]["mem"].push(obj["mem"].to_i())
     mem = $sample[project]["mem"].inject(0,:+) / ServerConfig.get("sampleSize").to_i()
-    $sample[project]["tcp"] = obj["tcp"]
-    $sample[project]["tcp"] = obj["udp"]
+    $sample[project]["tcp"] =obj["tcp"]
+    $sample[project]["udp"] = obj["udp"]
 
 
+p $sample[project]["udp"].to_i() > sobj["udp"].to_i()
+p sobj["udp"].to_i()
+    if cpu > sobj["cpu"].to_i() || mem > sobj["mem"].to_i() || $sample[project]["tcp"].to_i() > sobj["tcp"].to_i() || $sample[project]["udp"].to_i() > sobj["udp"].to_i()
 
-    if cpu > obj["cpu"].to_i() || cpu > obj["mem"].to_i() || cpu > obj["tcp"].to_i() || cpu > obj["udp"].to_i()
 
         time = Time.now
         if PS.get("p/"+project+"/wait",time) <= time
@@ -74,7 +111,7 @@ post '/metric' do
             count = PS.get("p/"+project+"/required",0)
             count =count + 1
 
-            if(count<=obj["maxInstances"].to_i())
+            if(count<=sobj["maxInstances"].to_i())
               PS.set("p/"+project+"/required",count)
             end
         end

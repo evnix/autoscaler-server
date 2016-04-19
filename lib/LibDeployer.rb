@@ -12,6 +12,7 @@ class LibDeployer
 	def deploy()
 		repos =  listRepos()
 		preDeploy(repos)
+		return true
 	end
 
 	def listRepos()

@@ -1,5 +1,6 @@
 require_relative "./LibConfig"
 require_relative "./libPStore.rb"
+require_relative "./LibInstance.rb"
 require 'net/http'
 require 'net/https'
 require 'uri'
@@ -21,8 +22,17 @@ class LibIPFetcher
 	def self._fetchData()
 
 
-			str= open("https://api.vultr.com/v1/server/list",
-					  "API-Key" => "34KSOMQICL5OCDFETXTV6AVZPYW3O4").read
+
+			obj =  Vultr.new( BasicInstance.new)
+
+			
+			obj4=obj.set_IPfetcher()
+
+			#str= open("https://api.vultr.com/v1/server/list",
+			#		  "API-Key" => "34KSOMQICL5OCDFETXTV6AVZPYW3O4").read
+
+			str= open(obj4.get_url(),
+					  "API-Key" => obj4.get_header('API-Key')).read
 
 			#p str
 			return str

@@ -1,7 +1,7 @@
 require_relative "LibGit"
 require 'open3'
 require_relative "./libPStore.rb"
-
+require_relative "./StoreFactory.rb"
 
 class LibUpdater
 
@@ -51,7 +51,9 @@ class LibUpdater
 
 			if localHash != remoteHash
 				LibGit.pullChanges(repo,"release")
-				PS.set("p/"+name+"/latest",(Time.now))
+
+				ps=StoreFactory.getStore("YAML")
+				ps.Set("p/"+name+"/latest",(Time.now))
 
 				cmd = "git --git-dir="+repo+"/.git --work-tree="+repo+" archive -o "+ServerConfig.get("tarLocation")+"/"+name+".tar.gz HEAD"
 				out, err, st = Open3.capture3(cmd)  
@@ -69,6 +71,7 @@ class LibUpdater
 
 		repos=  listRepos()
 		getOutdatedRepos(repos)
+		return true
 	end
 
 end

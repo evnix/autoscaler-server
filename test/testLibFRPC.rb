@@ -13,7 +13,7 @@ def say_hello(x,y)
 
 end
 
-class TestLibConfig < Test::Unit::TestCase
+class TestLibFRPC < Test::Unit::TestCase
 
 	self.test_order = :defined
 

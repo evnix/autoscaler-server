@@ -5,6 +5,8 @@ require_relative "lib/ServerConfig"
 require_relative "lib/initConfig"
 require_relative "lib/LibFRPC.rb"
 require_relative "lib/LibRingBuffer"
+require_relative "lib/LibUpdater.rb"
+
 require 'digest/sha2'
 enable :sessions
 
@@ -15,11 +17,32 @@ $i=0
 $sample={}
 
 
+post '/logout' do
+
+  obj={}
+    if(params["token"]==nil)
+      obj["res"]="noauth"
+      return   JSON.generate(obj)
+    end
+
+    if params["token"] == session["token"]
+            obj["data"]="DATA"
+            obj["res"]="ok"
+            session["token"]=rand(999..9999).to_s()+"xq"
+
+
+    else
+        obj["res"]="nosession"
+    end
+
+    return  JSON.generate(obj)
+
+end
 
 post '/login' do
   #pass@989..
    obj ={}
-  if param['p']!=nil &&  ServerConfig.get("pass") == Digest::SHA2.hexdigest(params['p']+ServerConfig.get("salt"))
+  if params['p']!=nil &&  ServerConfig.get("pass") == Digest::SHA2.hexdigest(params['p']+ServerConfig.get("salt"))
       t="ok"
       session['token'] = rand(999..9999).to_s()+"xq"
       
@@ -31,6 +54,92 @@ post '/login' do
   end
 
   JSON.generate(obj)
+end
+
+
+post '/subids' do
+
+  obj={}
+    if(params["token"]==nil)
+      obj["res"]="noauth"
+      return   JSON.generate(obj)
+    end
+
+    if params["token"] == session["token"]
+            obj["data"]="DATA"
+            obj["res"]="ok"
+
+
+            name=params["project"]
+            jstr = PS.get("p/"+name+"/subids","[]")
+            subids = JSON.parse(jstr)
+
+            names=[]
+            
+            subids.each{
+
+              |subid|
+
+
+
+              names.push(subid)
+
+            }
+
+             obj["data"]=names
+
+
+    else
+        obj["res"]="nosession"
+    end
+
+    return  JSON.generate(obj)
+
+end
+
+
+post '/delete' do
+
+
+end
+
+post "/projects" do
+
+  obj={}
+    if(params["token"]==nil)
+      obj["res"]="noauth"
+      return   JSON.generate(obj)
+    end
+
+    if params["token"] == session["token"]
+            obj["data"]="DATA"
+            obj["res"]="ok"
+
+            lu = LibUpdater.new
+            repos=lu.listRepos()
+
+            names=[]
+            repos.each{
+
+              |repo|
+
+
+              parts=repo.split("/")
+
+              name=parts[parts.length-1]
+
+              names.push(name)
+
+            }
+             obj["data"]=names
+
+
+    else
+        obj["res"]="nosession"
+    end
+
+    return  JSON.generate(obj)
+
 end
 
 

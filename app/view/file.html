@@ -41,13 +41,12 @@ body {
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Project name</a>
+          <a class="navbar-brand" href="#">AutoScaler</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#contact"></a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
@@ -76,10 +75,30 @@ body {
 
 
 
-            <div class="row" id="projects">
+            <div class="row" id="projects" style="display: none">
             <div class="col-md-6">
-             <table class="table table-bordered"> <thead> <tr> <th>#</th> <th>First Name</th> <th>Last Name</th> <th>Username</th> </tr> </thead> <tbody> <tr> <th scope="row">1</th> <td>Mark</td> 
-             <td>Otto</td> <td>@mdo</td> </tr> <tr> <th scope="row">2</th> <td>Jacob</td> <td>Thornton</td> <td>@fat</td> </tr> <tr> <th scope="row">3</th> <td>Larry</td> <td>the Bird</td> <td>@twitter</td> </tr> </tbody> </table> 
+            <button type="submit" class="btn btn-default" onclick="get_projects()">Refresh</button>
+              <button type="submit" class="btn btn-default" onclick="logout()">Logout</button>
+            <br>
+             <table class="table table-bordered"> <thead> <tr> <th>#</th> <th>Project Name</th> </tr> </thead> 
+             <tbody id="tb"> 
+
+             </tbody>
+             </table>
+            </div>
+            </div>
+
+
+
+
+
+            <div class="row" id="subids" style="display: none">
+            <div class="col-md-6">
+            <br>
+             <table class="table table-bordered"> <thead> <tr> <th>#</th> <th>Subid</th> </tr> </thead> 
+             <tbody id="sb"> 
+
+             </tbody>
             </div>
             </div>
 
@@ -94,12 +113,110 @@ body {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <script>
+
+token=""
 function login(){
 
-  $.post("/login",{u:$('#username').val(),p:$('#password').val()},function(data){
 
-    console.log(data)
+  
+  $.post("/login",{u:$('#user').val(),p:$('#pass').val()},function(data){
+
+    obj=JSON.parse(data)
+    if(obj.res=="ok"){
+      token=obj.token;
+      $('#user').val("")
+      $('#pass').val("")
+      $('#login').hide()
+      $('#projects').show()
+      $('#subids').show()
+
+      get_projects();
+
+    }else{
+
+      alert("invalid username or password")
+
+    }
+
   });
+
+}
+
+
+function logout(){
+
+  $.post("/logout",{token:token},function(data){
+        obj=JSON.parse(data);
+
+      console.log(obj)
+
+
+         location.reload(); 
+
+
+  });
+
+
+}
+
+
+function get_subids(project){
+
+
+  $.post("/subids",{token:token,project:project},function(data){
+        obj=JSON.parse(data);
+
+        if (obj.res=="ok") {
+
+          plist=obj.data;
+          str=""
+          for(i=0;i<plist.length;i++){
+
+              str+="<tr><th scope='row'>"+(i+1)+"</th> <td>"+plist[i]+"</td></tr>"
+
+          }
+
+          $('#sb').html(str)
+
+        }
+
+
+
+
+
+  });
+
+}
+
+
+
+function get_projects(){
+
+
+  $.post("/projects",{token:token},function(data){
+        obj=JSON.parse(data);
+
+        if (obj.res=="ok") {
+
+          plist=obj.data;
+          str=""
+          for(i=0;i<plist.length;i++){
+
+              str+="<tr><th scope='row'>"+(i+1)+"</th> <td onclick='get_subids(\""+plist[i]+"\")'><a href='javascript:void(0)'>"+plist[i]+"</td></tr>"
+
+          }
+
+          $('#tb').html(str)
+
+        }
+
+
+
+
+
+  });
+
+
 
 }
 

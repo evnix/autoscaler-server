@@ -1,15 +1,15 @@
 require "pstore"
 require "yaml/store"
 
-class PS
+class LibPS
 
 	#uses eager initialization approach
-	@@db = YAML::Store.new("data/db.yaml")
+	@@db = PStore.new("data/db.pstore")
 
 
 	def self.getInstance()
 
-		return PS.new
+		return LibPS.new
 	end
 
 
@@ -21,7 +21,7 @@ class PS
 	def Set(key,value)
 		LibPS.set(key,value)
 	end
-	
+
 	def self.get(key,default=nil)
 		
 

@@ -4,7 +4,7 @@ require 'test/unit'
 
 
 
-class TestLibConfig < Test::Unit::TestCase
+class TestLibFIPC < Test::Unit::TestCase
 
 	self.test_order = :defined
 

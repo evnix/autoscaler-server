@@ -1,5 +1,7 @@
 require_relative "./LibConfig"
 require_relative "./libPStore.rb"
+require_relative "./StoreFactory.rb"
+require_relative "./LibInstance.rb"
 require 'net/http'
 require 'net/https'
 require 'uri'
@@ -29,8 +31,9 @@ class LibInstanceCreator
 
 			objConfig = LibConfig._getRepoConfig(config)
 
+							ps=StoreFactory.getStore("YAML")
 
-			if PS.get("p/"+objConfig["name"]+"/running",0) < objConfig["minInstances"]
+			if ps.Get("p/"+objConfig["name"]+"/running",0) < objConfig["minInstances"]
 
 				time = Time.now
 
@@ -77,15 +80,26 @@ class LibInstanceCreator
 
 		for i in 1..minInstances
 
-				url = URI.parse('https://api.vultr.com/v1/server/create')
+
+
+				obj =  VM.new( BasicInstance.new)
+				obj2=obj.set_os("ubuntu")
+
+				obj3 = Vultr.new(obj2)
+				obj4=obj3.set_data()
+
+				#url = URI.parse('https://api.vultr.com/v1/server/create')
+				url = URI.parse(obj4.get_url())
 
 				http = Net::HTTP.new(url.host, url.port)
 				http.use_ssl = true
 
-				data = "DCID=8&VPSPLANID=29&OSID=160&SSHKEYID=57045f3be75c5"
+				#data = "DCID=8&VPSPLANID=29&OSID=160&SSHKEYID=57045f3be75c5"
+				data = obj4.get_params()
 
 				headers = {
-				  'API-Key' => '34KSOMQICL5OCDFETXTV6AVZPYW3O4'
+				  #'API-Key' => '34KSOMQICL5OCDFETXTV6AVZPYW3O4'
+				  'API-Key' => obj4.get_header('API-Key')
 				}
 
 				resp = http.post(url.path, data, headers)
@@ -111,6 +125,7 @@ class LibInstanceCreator
 				jstr = JSON.generate(subids)
 				PS.set("p/"+name+"/subids",jstr)
 
+				return subId
 		end
 
 

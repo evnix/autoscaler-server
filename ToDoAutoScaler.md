@@ -1,6 +1,10 @@
 **Project Name:** CloudAutoScaler
 
+```
+Deadline: 18 April 2016
+Project Completed.
 
+```
 ```
 Dealine: 12 April 2016
 Nishant - server shutdown interface (Agent) [pending]
@@ -56,19 +60,17 @@ Avinash - Auto Clone from config file [Done]
 - Repository configuration [Done: Avinash]
 - Clone repo [Done: Avinash]
 - Ping for new code from the repository [done:Avinash]
-- Deploy/Destroy new instance thru API
-- Run agent in the deployed instance
-- daemon that will decide when to scale up and scal down
+- Run agent in the deployed instance [Done: Avinash]
+- daemon that will decide when to scale up and scal down [Done: Avinash]
 
 **Servers:**
 1. Cloning New Repos [Done: Avinash]
 2. Ping for new code [Done: Avinash]
-3. Decision making daemon
+3. Decision making daemon [Done: Avinash]
 
 ### Agent
-- Library to fetch metrics
-- send those metrics back to the server
-- execute commands such as safely shutdown the server
+- Library to fetch metrics [Done: Avinash]
+- send those metrics back to the server [Done: Avinash]
 
 
 ### Working of the Supervisor model.
